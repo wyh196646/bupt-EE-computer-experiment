@@ -46,13 +46,17 @@ class initUI(QWidget):
 			Alist.append(int(i))
 			Blist.append(int(j))
 		if self.Fexpression.text() =='~A':
-			for i in A:
-				c=~(int(i))
-				Clist.append(c)
+			for i in Avalue:
+				if int(i)>0:
+					Clist.append(0)
+				else:
+					Clist.append(1)
 		elif self.Fexpression.text()=='~B':
-			for i in B:
-				c=~(int(i))
-				Clist.append(c)
+			for i in Bvalue:
+				if int(i)>0:
+					Clist.append(0)
+				else:
+					Clist.append(1)
 		elif self.Fexpression.text()=='A&B':
 			for (i,j) in zip(Avalue,Bvalue):
 				c=int(i)&int(j)#北邮电子院的数学物理方法这门课能不能别开了
@@ -67,8 +71,11 @@ class initUI(QWidget):
 				Clist.append(c)
 		elif self.Fexpression.text()=='~(A^B)':
 			for (i,j) in zip(Avalue,Bvalue):
-				c=~(int(i)^int(j))
-				Clist.append(c)
+				c=(int(i)^int(j))
+				if c>0:
+					Clist.append(0)
+				else:
+					Clist.append(1)
 		num_list_new = [str(x) for x in Clist]
 		re=",".join(num_list_new)
 		self.Csequence.setText(re)

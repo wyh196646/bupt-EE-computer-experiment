@@ -15,15 +15,13 @@ class myWindow:
 		self.top = tk.Toplevel(root, width=300, height=200)
 		self.top.title(myTitle)
 		self.top.attributes('-topmost', 1)
-		label = tk.Label(self.top, text=myTitle)
-		label.place(x=0, y=20)
-		labelx= tk.Label(self.top, text='组合查询的结果已经嵌入到下拉选项中')
-		labelx.place(x=0, y=50)
+		labelx= tk.Label(self.top, text='查询到%d支'%len(Xlist))
+		labelx.place(x=0, y=20)
 		buptstockpull= ttk.Combobox(self.top, width=12)
 		buptstockpull['values'] = Xlist# 设置下拉列表的值
 		buptstockpull.current(0)  
 		buptstockpull.place( x=100,y=20)      # 设置其在界面中出现的位置  column代表列   row 代表行
-		query_pull=ttk.Button(self.top, text="下拉查询:",command=lambda :stock_pull(buptstockpull.get()))
+		query_pull=ttk.Button(self.top, text="数据查询:",command=lambda :stock_pull(buptstockpull.get()))
 		query_pull.place(x=200, y=20)
 
 def deleteDuplicatedElementFromList2(list):
@@ -106,6 +104,8 @@ def Combination_query():
 	print(evaluestockprice)
 	sql_combition = "select * from data where Date ='%s' or Date='%s'"
 	cursor.execute(sql_combition%(startdate.get(),finaldate.get()))
+	print(startdate.get())
+	print(finaldate.get())
 	results = cursor.fetchall()
 	i=0
 	k=0
@@ -114,12 +114,15 @@ def Combination_query():
 	if(evaluestockprice>0):
 		while(i<len(results)-1):
 			pricegap=(float(results[i+1][2])-float(results[i][2]))/float(results[i][2])
+			#print(results[i+1][7]+'         '+results[i][7])
 			finacegap=(float(results[i+1][7][0:3])-float(results[i][7][0:3]))/float(results[i][7][0:3])
+			#print(finacegap)
 			if(pricegap>evaluestockprice):
 				stock1.append(results[i][6])
+				print(results[i+1][7]+'         '+results[i][7])
 				finacehash.append(finacegap)	
 			i=i+2
-	elif(evaluestockprice>0):
+	elif(evaluestockprice<0):
 		while(i<len(results)-1):
 			pricegap=(float(results[i+1][2])-float(results[i][2]))/float(results[i][2])
 			finacegap=(float(results[i+1][7][0:3])-float(results[i][7][0:3]))/float(results[i][7][0:3])
@@ -127,10 +130,8 @@ def Combination_query():
 				stock1.append(results[i][6])
 				finacehash.append(finacegap)	
 			i=i+2
-	print(stock1)
-	print(finacehash)		
-	print(len(finacehash))
-	print(len(stock1))
+	print(stock1[16])
+	print(finacehash[16])
 	m=0
 	q=0
 	if(evaluestockfinace>0):
@@ -140,13 +141,14 @@ def Combination_query():
 			m=m+1
 	elif(evaluestockfinace<0):
 		while(m<len(finacehash)-1):
-			if(finacehash[m]<evaluestockfinace):
+			if(finacehash[m]>evaluestockfinace):
 				stock1[m]='0'
 			m=m+1
 	while '0' in stock1:
 		stock1.remove('0')
 	print(stock1)
-	w1 = myWindow(win, '查询结果', stock1)
+
+	w1 = myWindow(win, '查询结果如下', stock1)
 	
 def stock_pull(a):
 	sql_1= "SELECT * from data where  Stock_name='%s';" 
