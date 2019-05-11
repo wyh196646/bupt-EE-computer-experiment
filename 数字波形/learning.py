@@ -13,6 +13,7 @@ Blist=[]
 Clist=[]
 Astr=[]
 Bstr=[]
+q=[]
 class initUI(QWidget):
 	def __init__(self):
 		super(initUI, self).__init__()
@@ -46,7 +47,6 @@ class initUI(QWidget):
 			Alist.append(int(i))
 			Blist.append(int(j))
 		F=self.Fexpression.text()
-		q=[]
 		for (A,B) in zip(Alist,Blist):
 			q.append(eval(F))
 		print(q)
@@ -71,7 +71,7 @@ class initUI(QWidget):
 			else :
 				yB.append(0)
 		for k in x:
-			if(Clist[int(k)]==1):
+			if(q[int(k)]==1):
 				yC.append(1)
 			else :
 				yC.append(0)
