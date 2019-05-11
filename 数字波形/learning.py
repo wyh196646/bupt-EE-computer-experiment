@@ -11,6 +11,8 @@ from numpy.linalg import cholesky
 Alist=[]
 Blist=[]
 Clist=[]
+Astr=[]
+Bstr=[]
 class initUI(QWidget):
 	def __init__(self):
 		super(initUI, self).__init__()
@@ -21,7 +23,6 @@ class initUI(QWidget):
 		self.Bsequence = QLineEdit()
 		self.Fexpression= QLineEdit()
 		self.Csequence= QLineEdit()
-		self.hint=QLabel("支持四种运算,与,或,非,异或,同或，输入分别为为~A,~B,A&B,A|B,A^B,~(A^B)")
 		self.bupt=QLabel("Developed by Hao 2019/4/13")
 		self.btn=QPushButton('运算')
 		self.btn_1=QPushButton("画图")
@@ -30,7 +31,6 @@ class initUI(QWidget):
 		flo.addRow("A序列",self.Asequence)
 		flo.addRow("B序列", self.Bsequence)
 		flo.addRow("F表达式",self.Fexpression)
-		flo.addWidget(self.hint)
 		flo.addRow("运算结果",self.Csequence)
 		flo.addWidget(self.btn) 
 		flo.addWidget(self.btn_1)  
@@ -40,43 +40,17 @@ class initUI(QWidget):
 		self.btn_1.clicked.connect(self.paintA)
 		
 	def  on_click(self):
-		Avalue=self.Asequence.text()
-		Bvalue=self.Bsequence.text()
-		for(i,j) in zip(Avalue,Bvalue):
+		Astr=self.Asequence.text()
+		Bstr=self.Bsequence.text()
+		for(i,j) in zip(Astr,Bstr):
 			Alist.append(int(i))
 			Blist.append(int(j))
-		if self.Fexpression.text() =='~A':
-			for i in Avalue:
-				if int(i)>0:
-					Clist.append(0)
-				else:
-					Clist.append(1)
-		elif self.Fexpression.text()=='~B':
-			for i in Bvalue:
-				if int(i)>0:
-					Clist.append(0)
-				else:
-					Clist.append(1)
-		elif self.Fexpression.text()=='A&B':
-			for (i,j) in zip(Avalue,Bvalue):
-				c=int(i)&int(j)#北邮电子院的数学物理方法这门课能不能别开了
-				Clist.append(c)
-		elif self.Fexpression.text()=='A|B':
-			for (i,j) in zip(Avalue,Bvalue):
-				c=int(i)|int(j)#学也学不明白，学你*呢，老师你自己会吗
-				Clist.append(c)
-		elif self.Fexpression.text()=='A^B':
-			for (i,j) in zip(Avalue,Bvalue):
-				c=int(i)^int(j)
-				Clist.append(c)
-		elif self.Fexpression.text()=='~(A^B)':
-			for (i,j) in zip(Avalue,Bvalue):
-				c=(int(i)^int(j))
-				if c>0:
-					Clist.append(0)
-				else:
-					Clist.append(1)
-		num_list_new = [str(x) for x in Clist]
+		F=self.Fexpression.text()
+		q=[]
+		for (A,B) in zip(Alist,Blist):
+			q.append(eval(F))
+		print(q)
+		num_list_new = [str(x) for x in q]
 		re=",".join(num_list_new)
 		self.Csequence.setText(re)
 

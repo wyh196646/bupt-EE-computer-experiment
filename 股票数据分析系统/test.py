@@ -1,4 +1,7 @@
-A='16161616'
-B='16264646'
-finacegap=(float(A[7][0:3])-float(B[7][0:3]))/float(B[7][0:3])
-print(finacegap)
+Alist=[0,1,0,1,1,0]
+Blist=[1,1,0,0,0,0]
+c='A&B'
+q=[]
+for (A,B) in zip(Alist,Blist):
+	q.append(eval(c))
+print(q)
